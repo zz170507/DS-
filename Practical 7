@@ -1,0 +1,152 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 10
+
+// Node structure for linked list
+struct Node
+{
+    int key;
+    int value;
+    struct Node *next;
+};
+
+// Hash table
+struct Node *hashTable[SIZE];
+
+// Hash function
+int hashFunction(int key)
+{
+    return key % SIZE;
+}
+
+// Insert data into hash table
+void insert(int key, int value)
+{
+    int index = hashFunction(key);
+
+    // Create a new node
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+
+    newNode->key = key;
+    newNode->value = value;
+    newNode->next = NULL;
+
+    // If no node exists at this index
+    if (hashTable[index] == NULL)
+    {
+        hashTable[index] = newNode;
+    }
+    else
+    {
+        // Insert at beginning of linked list
+        newNode->next = hashTable[index];
+        hashTable[index] = newNode;
+    }
+
+    printf("Data inserted successfully.\n");
+}
+
+// Search/retrieve data from hash table
+void search(int key)
+{
+    int index = hashFunction(key);
+
+    struct Node *temp = hashTable[index];
+
+    // Traverse the linked list
+    while (temp != NULL)
+    {
+        if (temp->key == key)
+        {
+            printf("Key: %d, Value: %d\n", temp->key, temp->value);
+            return;
+        }
+
+        temp = temp->next;
+    }
+
+    printf("Key not found.\n");
+}
+
+// Display hash table
+void display()
+{
+    int i;
+
+    printf("\nHash Table:\n");
+
+    for (i = 0; i < SIZE; i++)
+    {
+        printf("[%d] -> ", i);
+
+        struct Node *temp = hashTable[i];
+
+        while (temp != NULL)
+        {
+            printf("(%d, %d) -> ", temp->key, temp->value);
+            temp = temp->next;
+        }
+
+        printf("NULL\n");
+    }
+}
+
+// Main function
+int main()
+{
+    int choice;
+    int key, value;
+
+    // Initialize hash table
+    for (int i = 0; i < SIZE; i++)
+    {
+        hashTable[i] = NULL;
+    }
+
+    while (1)
+    {
+        printf("\n--- HASH TABLE ---\n");
+        printf("1. Insert Data\n");
+        printf("2. Retrieve/Search Data\n");
+        printf("3. Display Hash Table\n");
+        printf("4. Exit\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                printf("Enter key: ");
+                scanf("%d", &key);
+
+                printf("Enter value: ");
+                scanf("%d", &value);
+
+                insert(key, value);
+                break;
+
+            case 2:
+                printf("Enter key to search: ");
+                scanf("%d", &key);
+
+                search(key);
+                break;
+
+            case 3:
+                display();
+                break;
+
+            case 4:
+                printf("Program terminated.\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
+
