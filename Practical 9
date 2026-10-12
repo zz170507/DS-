@@ -1,0 +1,79 @@
+#include <stdio.h>
+
+// Function for Linear Search
+int linearSearch(int arr[], int n, int key)
+{
+    int i;
+
+    for (i = 0; i < n; i++)
+    {
+        if (arr[i] == key)
+            return i;       // Return index if element is found
+    }
+
+    return -1;              // Element not found
+}
+
+// Function for Binary Search
+// Array must be sorted in ascending order
+int binarySearch(int arr[], int n, int key)
+{
+    int low = 0, high = n - 1, mid;
+
+    while (low <= high)
+    {
+        mid = (low + high) / 2;
+
+        if (arr[mid] == key)
+            return mid;     // Element found
+
+        else if (arr[mid] < key)
+            low = mid + 1;  // Search right half
+
+        else
+            high = mid - 1; // Search left half
+    }
+
+    return -1;              // Element not found
+}
+
+int main()
+{
+    int arr[100], n, key;
+    int i, linearResult, binaryResult;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements in sorted order:\n", n);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter the element to search: ");
+    scanf("%d", &key);
+
+    // Linear Search
+    linearResult = linearSearch(arr, n, key);
+
+    // Binary Search
+    binaryResult = binarySearch(arr, n, key);
+
+    printf("\n--- Search Results ---\n");
+
+    if (linearResult != -1)
+        printf("Linear Search: Element found at position %d\n",
+               linearResult + 1);
+    else
+        printf("Linear Search: Element not found\n");
+
+    if (binaryResult != -1)
+        printf("Binary Search: Element found at position %d\n",
+               binaryResult + 1);
+    else
+        printf("Binary Search: Element not found\n");
+
+    return 0;
+}
+
